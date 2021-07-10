@@ -1,0 +1,13 @@
+@model Actvity
+
+<header>
+    <p>Dojo Activity Center
+
+        <a asp-action="Dashboard" asp-controller="Home">Home</a> - <a asp-action="LogOut"
+            asp-controller="Home">LogOut</a>
+    </p>
+
+    <h1> Create an Activity</h1>
+    <form asp-action="PostActivity" asp-controller="Home" method="POST">
+        <partial name="_ActivityFormPartial"></partial>
+    </form>

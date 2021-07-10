@@ -1,0 +1,65 @@
+@model List<Actvity>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <header>
+        <h1> Dojo Activiy Center</h1>
+        <p> Hello @ViewBag.User.Name! <a asp-action="LogOut" asp-controller="Home">LogOut</a></p>
+    </header>
+
+
+    <table class="table table-striped tabl e-light">
+        <thead>
+            <th>Activity</th>
+            <th>Date and Time</th>
+            <th>Duration</th>
+            <th>Event Coordinator</th>
+            <th>No pf Partspents</th>
+            <th>Actions</th>
+        </thead>
+        @foreach (var activity in Model)
+        {
+            if (@activity.Date > @DateTime.Now)
+            {
+                <tr>
+                    <td><a asp-action="Activities" asp-controller="Home"
+                    asp-route-activityId="@activity.ActvityId">@activity.Title </a></td>
+                    <td>@activity.Date.ToString("MM/dd") @activity.Time.ToString("h:mm tt") </td>
+                    <td>@activity.InputDuration @activity.Duration </td>
+                    <td>@activity.HostedBy.Name</td>
+                    <td>@activity.JoinList.Count</td>
+                    <td>
+                        @if (activity.HostedBy.UserId == ViewBag.User.UserId)
+                        {
+
+                            <a asp-action="Delete" asp-controller="Home" asp-route-activityId="@activity.ActvityId"><button
+                        class="btn btn-sm btn-danger">Delete</button></a>
+                        }
+
+                        else if (@activity.JoinList.Any(f => f.UserId == ViewBag.User.UserId))
+                        {
+                            <a asp-action="Leave" asp-controller="Home" asp-route-activityId="@activity.ActvityId"><button
+                        class="btn btn-sm btn-warning">Leave</button></a>
+                        }
+                        else
+                        {
+                            <a asp-action="Join" asp-controller="Home" asp-route-activityId="@activity.ActvityId"><button
+                        class="btn btn-sm btn-primary">Join</button></a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <a asp-action="NewActivity" asp-controller="Home">Add New Activity</a>
+</body>
+
+</html>
